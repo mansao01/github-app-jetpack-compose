@@ -1,5 +1,6 @@
 package com.example.githubappcompose.network.response
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,60 +9,59 @@ import kotlinx.serialization.Serializable
 //	val userResponse: List<UserResponseItem>
 //)
 
-@Serializable
 data class UserResponseItem(
 
-	@SerialName("gists_url")
+	@field:SerializedName("gists_url")
 	val gistsUrl: String,
 
-	@SerialName("repos_url")
+	@field:SerializedName("repos_url")
 	val reposUrl: String,
 
-	@SerialName("following_url")
+	@field:SerializedName("following_url")
 	val followingUrl: String,
 
-	@SerialName("starred_url")
+	@field:SerializedName("starred_url")
 	val starredUrl: String,
 
-	@SerialName("login")
+	@field:SerializedName("login")
 	val login: String,
 
-	@SerialName("followers_url")
+	@field:SerializedName("followers_url")
 	val followersUrl: String,
 
-	@SerialName("type")
+	@field:SerializedName("type")
 	val type: String,
 
-	@SerialName("url")
+	@field:SerializedName("url")
 	val url: String,
 
-	@SerialName("subscriptions_url")
+	@field:SerializedName("subscriptions_url")
 	val subscriptionsUrl: String,
 
-	@SerialName("received_events_url")
+	@field:SerializedName("received_events_url")
 	val receivedEventsUrl: String,
 
-	@SerialName("avatar_url")
+	@field:SerializedName("avatar_url")
 	val avatarUrl: String,
 
-	@SerialName("events_url")
+	@field:SerializedName("events_url")
 	val eventsUrl: String,
 
-	@SerialName("html_url")
+	@field:SerializedName("html_url")
 	val htmlUrl: String,
 
-	@SerialName("site_admin")
+	@field:SerializedName("site_admin")
 	val siteAdmin: Boolean,
 
-	@SerialName("id")
+	@field:SerializedName("id")
 	val id: Int,
 
-	@SerialName("gravatar_id")
+	@field:SerializedName("gravatar_id")
 	val gravatarId: String,
 
-	@SerialName("node_id")
+	@field:SerializedName("node_id")
 	val nodeId: String,
 
-	@SerialName("organizations_url")
+	@field:SerializedName("organizations_url")
 	val organizationsUrl: String
 )

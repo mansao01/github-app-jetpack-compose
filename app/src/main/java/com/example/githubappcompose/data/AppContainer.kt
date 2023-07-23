@@ -5,6 +5,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 interface AppContainer {
     val userRepository: UserRepository
@@ -12,9 +13,11 @@ interface AppContainer {
 
 class DefaultAppContainer : AppContainer {
     private val baseUrl = "https://api.github.com/"
+    private val gson = GsonConverterFactory.create()
+
 
     private val retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(gson)
         .baseUrl(baseUrl)
         .build()
 

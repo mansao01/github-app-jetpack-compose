@@ -1,43 +1,40 @@
-package com.example.githubappcompose.ui.screen.home
+package com.example.githubappcompose.ui.screen.detail
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.githubappcompose.GitHubApplication
 import com.example.githubappcompose.data.UserRepository
-import com.example.githubappcompose.network.response.UserResponseItem
-import com.example.githubappcompose.ui.common.HomeUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.githubappcompose.ui.common.DetailUiState
+import com.example.githubappcompose.ui.screen.home.HomeViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
+class DetailViewModel(private val userRepository: UserRepository) :
+    ViewModel() {
 
-    var uiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
+    var uiState: DetailUiState by mutableStateOf(DetailUiState.Loading)
         private set
 
-    init {
-        getUsers()
-    }
 
-    private fun getUsers() {
+     fun getDetailUser(username: String) {
         viewModelScope.launch {
-            uiState = HomeUiState.Loading
+            uiState = DetailUiState.Loading
             uiState = try {
-                val result = userRepository.getUsers()
-                HomeUiState.Success(result)
+                val result = userRepository.getDetailUser(username)
+                DetailUiState.Success(result)
             } catch (e: IOException) {
-                HomeUiState.Error
+                DetailUiState.Error
             } catch (e: HttpException) {
-                HomeUiState.Error
+                DetailUiState.Error
             }
         }
     }
@@ -45,10 +42,13 @@ class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = (this[APPLICATION_KEY] as GitHubApplication)
+                val application =
+                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GitHubApplication)
                 val userRepository = application.container.userRepository
-                HomeViewModel(userRepository = userRepository)
+
+                DetailViewModel(userRepository = userRepository)
             }
         }
     }
+
 }

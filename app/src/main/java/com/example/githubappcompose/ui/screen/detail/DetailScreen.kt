@@ -9,18 +9,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.githubappcompose.network.response.UserDetailResponse
+import com.example.githubappcompose.ui.common.DetailUiState
+import com.example.githubappcompose.ui.common.HomeUiState
+import com.example.githubappcompose.ui.component.ErrorScreen
+import com.example.githubappcompose.ui.component.LoadingScreen
 
 @Composable
 fun DetailScreen(
-    username: String
+    uiState: DetailUiState
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(
-            text = username,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(top = 8.dp)
+    when (uiState) {
+        is DetailUiState.Loading -> LoadingScreen()
+        is DetailUiState.Success -> DetailContent(
+            user = uiState.Users
         )
+
+        is DetailUiState.Error -> ErrorScreen()
     }
 
+}
+
+@Composable
+fun DetailContent(
+    user: UserDetailResponse,
+    modifier: Modifier = Modifier
+) {
+    Text(text = "Helo ${user.email}")
 }

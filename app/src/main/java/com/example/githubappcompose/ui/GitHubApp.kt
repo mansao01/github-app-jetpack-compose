@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.example.githubappcompose.ui
 
@@ -10,11 +10,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -25,11 +23,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.githubappcompose.ui.navigation.Screen
 import com.example.githubappcompose.ui.screen.detail.DetailScreen
+import com.example.githubappcompose.ui.screen.detail.DetailViewModel
 import com.example.githubappcompose.ui.screen.home.HomeScreen
 
 
@@ -48,7 +46,10 @@ fun GitHubApp(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            NavHost(navController = navController, startDestination = Screen.Home.route, modifier = Modifier.fillMaxSize()) {
+            NavHost(
+                navController = navController,
+                startDestination = Screen.Home.route,
+            ) {
                 composable(Screen.Home.route) {
                     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
                     HomeScreen(
@@ -59,11 +60,15 @@ fun GitHubApp(
                         })
                 }
 
-                composable(Screen.Detail.route, arguments = listOf(navArgument("username"){
+                composable(Screen.Detail.route, arguments = listOf(navArgument("username") {
                     type = NavType.StringType
                 })) { data ->
-                    val username = data.arguments?.getString("username")  ?: ""
-                    DetailScreen(username = username)
+                    val detailViewModel: DetailViewModel =
+                        viewModel(factory = DetailViewModel.Factory)
+                    val username = data.arguments?.getString("username") ?: ""
+
+                    detailViewModel.getDetailUser(username)
+                    DetailScreen( uiState = detailViewModel.uiState)
                 }
             }
 
