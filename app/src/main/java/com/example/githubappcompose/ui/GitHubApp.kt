@@ -63,11 +63,11 @@ fun GitHubApp(
                 composable(Screen.Detail.route, arguments = listOf(navArgument("username") {
                     type = NavType.StringType
                 })) { data ->
+                    val username = data.arguments?.getString("username") ?: ""
                     val detailViewModel: DetailViewModel =
                         viewModel(factory = DetailViewModel.Factory)
-                    val username = data.arguments?.getString("username") ?: ""
-
                     detailViewModel.getDetailUser(username)
+
                     DetailScreen( uiState = detailViewModel.uiState)
                 }
             }

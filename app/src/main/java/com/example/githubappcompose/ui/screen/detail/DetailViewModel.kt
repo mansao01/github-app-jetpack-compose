@@ -12,7 +12,9 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.githubappcompose.GitHubApplication
 import com.example.githubappcompose.data.UserRepository
+import com.example.githubappcompose.network.UserApiService
 import com.example.githubappcompose.ui.common.DetailUiState
+import com.example.githubappcompose.ui.common.HomeUiState
 import com.example.githubappcompose.ui.screen.home.HomeViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -25,7 +27,7 @@ class DetailViewModel(private val userRepository: UserRepository) :
         private set
 
 
-     fun getDetailUser(username: String) {
+      fun getDetailUser(username: String) {
         viewModelScope.launch {
             uiState = DetailUiState.Loading
             uiState = try {
@@ -45,6 +47,7 @@ class DetailViewModel(private val userRepository: UserRepository) :
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GitHubApplication)
                 val userRepository = application.container.userRepository
+
 
                 DetailViewModel(userRepository = userRepository)
             }

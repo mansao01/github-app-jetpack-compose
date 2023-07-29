@@ -21,7 +21,7 @@ fun HomeScreen(
     when (uiState) {
         is HomeUiState.Loading -> LoadingScreen()
         is HomeUiState.Success -> UserListItem(
-            user = uiState.Users,
+            user = uiState.users,
             navigateToDetail = navigateToDetail
         )
 
