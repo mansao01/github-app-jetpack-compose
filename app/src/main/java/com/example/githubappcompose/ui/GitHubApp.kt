@@ -2,6 +2,7 @@
 
 package com.example.githubappcompose.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -66,9 +67,8 @@ fun GitHubApp(
                     val username = data.arguments?.getString("username") ?: ""
                     val detailViewModel: DetailViewModel =
                         viewModel(factory = DetailViewModel.Factory)
-                    detailViewModel.getDetailUser(username)
 
-                    DetailScreen( uiState = detailViewModel.uiState)
+                    DetailScreen( uiState = detailViewModel.uiState, username = username)
                 }
             }
 

@@ -38,7 +38,7 @@ fun UserListItem(
 ) {
     LazyColumn() {
         items(user) { data ->
-            UserItem(user = data, modifier = Modifier.clickable { navigateToDetail(data.login) })
+            UserItem(user = data, modifier = modifier.clickable { navigateToDetail(data.login) })
         }
     }
 

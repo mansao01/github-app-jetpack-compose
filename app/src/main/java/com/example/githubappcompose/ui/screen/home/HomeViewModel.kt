@@ -28,7 +28,7 @@ class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
         getUsers()
     }
 
-    private fun getUsers() {
+     private fun getUsers() {
         viewModelScope.launch {
             uiState = HomeUiState.Loading
             uiState = try {
