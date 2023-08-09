@@ -41,7 +41,7 @@ data class UserDetailResponse(
 	val siteAdmin: Boolean,
 
 	@field:SerializedName("company")
-	val company: Any,
+	val company: Any? = null,
 
 	@field:SerializedName("id")
 	val id: Int,

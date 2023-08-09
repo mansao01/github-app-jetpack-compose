@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -24,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.githubappcompose.ui.navigation.Screen
@@ -38,9 +40,16 @@ fun GitHubApp(
     navController: NavHostController = rememberNavController()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { GitHubTopAppBar(scrollBehavior = scrollBehavior) }
+        topBar = {
+            if (currentRoute != Screen.Detail.route) {
+                GitHubTopAppBar(scrollBehavior = scrollBehavior)
+            }
+        }
     ) {
         Surface(
             modifier = Modifier
@@ -68,7 +77,13 @@ fun GitHubApp(
                     val detailViewModel: DetailViewModel =
                         viewModel(factory = DetailViewModel.Factory)
 
-                    DetailScreen( uiState = detailViewModel.uiState, username = username)
+                    DetailScreen(
+                        uiState = detailViewModel.uiState,
+                        username = username,
+                        navigateToHome = {
+                            navController.navigate(Screen.Home.route)
+                        }
+                    )
                 }
             }
 
