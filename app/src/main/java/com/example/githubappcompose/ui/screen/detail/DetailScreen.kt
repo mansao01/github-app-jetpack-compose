@@ -110,15 +110,17 @@ fun DetailContent(
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Icon(imageVector = Icons.Default.LocationOn, contentDescription = null)
                 Text(
-                    text = user.location,
-                    fontStyle = FontStyle.Italic
+                    text = user.location.toString(),
+                    fontStyle = FontStyle.Italic,
+                    modifier= Modifier.padding(top = 4.dp)
                 )
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Icon(imageVector = Icons.Default.LocationCity, contentDescription = null)
                 Text(
-                    text = user.company.toString() ?: "This user has not filed the company",
-                    fontStyle = FontStyle.Italic
+                    text = user.company.toString(),
+                    fontStyle = FontStyle.Italic,
+                    modifier= Modifier.padding(top = 4.dp)
                 )
             }
         }
