@@ -2,11 +2,8 @@
 
 package com.example.githubappcompose.ui.screen.detail
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,51 +11,42 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddLocation
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TabPosition
-import androidx.compose.material.TabRow
-//import androidx.compose.material3.TabRow
-import androidx.compose.material3.LeadingIconTab
-//import androidx.compose.material3.Tab
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRowDefaults
-//import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.UiComposable
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.githubappcompose.R
 import com.example.githubappcompose.network.response.UserDetailResponse
-import com.example.githubappcompose.network.response.UserResponseItem
 import com.example.githubappcompose.ui.common.DetailUiState
-import com.example.githubappcompose.ui.common.HomeUiState
+import com.example.githubappcompose.ui.common.FollowerUiState
+import com.example.githubappcompose.ui.common.FollowingUiState
 import com.example.githubappcompose.ui.component.ErrorScreen
 import com.example.githubappcompose.ui.component.LoadingScreen
+import com.example.githubappcompose.ui.screen.detail.follower.FollowerScreen
+import com.example.githubappcompose.ui.screen.detail.follower.FollowerViewModel
+import com.example.githubappcompose.ui.screen.detail.following.FollowingScreen
+import com.example.githubappcompose.ui.screen.detail.following.FollowingViewModel
 import com.example.githubappcompose.ui.tab.TabItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -70,19 +58,27 @@ import kotlinx.coroutines.launch
 @Composable
 fun DetailScreen(
     uiState: DetailUiState,
+    followerUiState: FollowerUiState,
+    followingUiState: FollowingUiState,
     username: String,
     detailViewModel: DetailViewModel = viewModel(factory = DetailViewModel.Factory),
+    followingViewModel: FollowingViewModel = viewModel(factory = FollowingViewModel.Factory),
+    followerVieModel: FollowerViewModel = viewModel(factory = FollowerViewModel.Factory),
     navigateToHome: () -> Unit
 
 ) {
     LaunchedEffect(Unit) {
         detailViewModel.getDetailUser(username)
+        followingViewModel.getFollowing(username)
+        followerVieModel.getFollower(username)
     }
     when (uiState) {
         is DetailUiState.Loading -> LoadingScreen()
         is DetailUiState.Success -> DetailContent(
             navigateToHome = navigateToHome,
-            user = uiState.users
+            user = uiState.users,
+            followerUiState = followerUiState,
+            followingUiState = followingUiState
         )
 
         is DetailUiState.Error -> ErrorScreen()
@@ -94,12 +90,14 @@ fun DetailScreen(
 fun DetailContent(
     user: UserDetailResponse,
     navigateToHome: () -> Unit,
+    followerUiState: FollowerUiState,
+    followingUiState: FollowingUiState,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+//            .verticalScroll(rememberScrollState())
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
@@ -148,13 +146,25 @@ fun DetailContent(
             }
         }
 
-        TabFollowSection()
+        TabFollowSection(
+            followerUiState = followerUiState,
+            followingUiState = followingUiState
+        )
     }
 }
 
 @Composable
-fun TabFollowSection(modifier: Modifier = Modifier) {
-    val tabs = listOf(TabItem.Following, TabItem.Follower)
+fun TabFollowSection(
+    modifier: Modifier = Modifier,
+    followerUiState: FollowerUiState,
+    followingUiState: FollowingUiState,
+) {
+    val tabs = listOf(
+        TabItem("Follower") { FollowerScreen(uiState = followerUiState) },
+        TabItem("Following") { FollowingScreen(uiState = followingUiState) },
+//                TabItem.Following,
+//        TabItem.Follower
+    )
 
     val pagerState = rememberPagerState(initialPage = tabs.size)
     Column(modifier = modifier.fillMaxWidth()) {

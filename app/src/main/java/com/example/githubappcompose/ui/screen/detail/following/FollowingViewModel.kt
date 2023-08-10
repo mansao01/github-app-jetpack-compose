@@ -1,4 +1,4 @@
-package com.example.githubappcompose.ui.screen.detail.follower
+package com.example.githubappcompose.ui.screen.detail.following
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,28 +10,27 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.githubappcompose.GitHubApplication
 import com.example.githubappcompose.data.UserRepository
-import com.example.githubappcompose.ui.common.FollowerUiState
+import com.example.githubappcompose.ui.common.FollowingUiState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class FollowerViewModel(
+class FollowingViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
-
-    var uiState: FollowerUiState by mutableStateOf(FollowerUiState.Loading)
+    var uiState: FollowingUiState by mutableStateOf(FollowingUiState.Loading)
         private set
 
-    fun getFollower(username: String) {
+    fun getFollowing(username: String) {
         viewModelScope.launch {
-            uiState = FollowerUiState.Loading
+            uiState = FollowingUiState.Loading
             uiState = try {
-                val result = userRepository.getFollower(username)
-                FollowerUiState.Success(result)
+                val result = userRepository.getFollowing(username)
+                FollowingUiState.Success(result)
             } catch (e: IOException) {
-                FollowerUiState.Error
+                FollowingUiState.Error
             } catch (e: HttpException) {
-                FollowerUiState.Error
+                FollowingUiState.Error
             }
         }
     }
@@ -42,7 +41,7 @@ class FollowerViewModel(
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GitHubApplication)
                 val userRepository = application.container.userRepository
-                FollowerViewModel(userRepository = userRepository)
+                FollowingViewModel(userRepository = userRepository)
             }
         }
     }

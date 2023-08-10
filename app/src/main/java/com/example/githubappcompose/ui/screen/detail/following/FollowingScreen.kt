@@ -1,24 +1,39 @@
 package com.example.githubappcompose.ui.screen.detail.following
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.githubappcompose.GitHubApplication
-import com.example.githubappcompose.data.UserRepository
-import com.example.githubappcompose.ui.screen.detail.DetailViewModel
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.example.githubappcompose.network.response.FollowingResponseItem
+import com.example.githubappcompose.ui.common.FollowingUiState
+import com.example.githubappcompose.ui.component.ErrorScreen
+import com.example.githubappcompose.ui.component.FollowingItem
+import com.example.githubappcompose.ui.component.LoadingScreen
 
-class FollowingScreen(private val userRepository: UserRepository) : ViewModel() {
 
+@Composable
+fun FollowingScreen(
+    uiState: FollowingUiState,
+    modifier: Modifier = Modifier
+) {
+    when (uiState) {
+        is FollowingUiState.Loading -> LoadingScreen()
+        is FollowingUiState.Success -> FollowerListItem(
+            user = uiState.users, modifier = modifier
+        )
 
-    companion object{
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application =
-                    (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as GitHubApplication)
-                val userRepository = application.container.userRepository
-                FollowingScreen(userRepository = userRepository)
-            }
+        is FollowingUiState.Error -> ErrorScreen()
+    }
+}
+
+@Composable
+fun FollowerListItem(
+    user: List<FollowingResponseItem>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn {
+        items(user) { data ->
+            FollowingItem(user = data)
         }
     }
 }

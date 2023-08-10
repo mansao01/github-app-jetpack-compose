@@ -31,6 +31,8 @@ import androidx.navigation.navArgument
 import com.example.githubappcompose.ui.navigation.Screen
 import com.example.githubappcompose.ui.screen.detail.DetailScreen
 import com.example.githubappcompose.ui.screen.detail.DetailViewModel
+import com.example.githubappcompose.ui.screen.detail.follower.FollowerViewModel
+import com.example.githubappcompose.ui.screen.detail.following.FollowingViewModel
 import com.example.githubappcompose.ui.screen.home.HomeScreen
 
 
@@ -76,9 +78,15 @@ fun GitHubApp(
                     val username = data.arguments?.getString("username") ?: ""
                     val detailViewModel: DetailViewModel =
                         viewModel(factory = DetailViewModel.Factory)
+                    val followerViewModel:FollowerViewModel =
+                        viewModel(factory = FollowerViewModel.Factory)
+                    val followingViewModel:FollowingViewModel =
+                        viewModel(factory = FollowingViewModel.Factory)
 
                     DetailScreen(
                         uiState = detailViewModel.uiState,
+                        followerUiState = followerViewModel.uiState,
+                        followingUiState = followingViewModel.uiState,
                         username = username,
                         navigateToHome = {
                             navController.navigate(Screen.Home.route)

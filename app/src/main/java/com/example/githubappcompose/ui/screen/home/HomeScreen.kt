@@ -1,6 +1,5 @@
 package com.example.githubappcompose.ui.screen.home
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,7 +22,8 @@ fun HomeScreen(
         is HomeUiState.Loading -> LoadingScreen()
         is HomeUiState.Success -> UserListItem(
             user = uiState.users,
-            navigateToDetail = navigateToDetail
+            navigateToDetail = navigateToDetail,
+            modifier = modifier
         )
 
         is HomeUiState.Error -> ErrorScreen()
@@ -37,9 +37,10 @@ fun UserListItem(
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn() {
+    LazyColumn{
         items(user) { data ->
-            UserItem(user = data, modifier = modifier.clickable { navigateToDetail(data.login) })
+            UserItem(user = data, modifier = modifier
+                .clickable { navigateToDetail(data.login) })
         }
     }
 
