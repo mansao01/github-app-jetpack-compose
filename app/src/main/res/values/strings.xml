@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">GitHubAppCompose</string>
     <string name="githubapp">GitHubApp</string>
+    <string name="search_user">Search user</string>
 </resources>

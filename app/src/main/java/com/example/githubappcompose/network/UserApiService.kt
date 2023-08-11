@@ -42,5 +42,5 @@ interface UserApiService {
     @Headers("authorization: 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 ")
     fun searchUser(
         @Query("q") q: String
-    ): UserResponseItem
+    ): List<UserResponseItem>
 }

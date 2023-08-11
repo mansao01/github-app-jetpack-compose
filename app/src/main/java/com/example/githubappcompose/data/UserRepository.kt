@@ -11,6 +11,7 @@ interface UserRepository {
     suspend fun getDetailUser(username: String): UserDetailResponse
     suspend fun getFollowing(username: String): List<FollowingResponseItem>
     suspend fun getFollower(username: String): List<FollowerResponseItem>
+    suspend fun searchUser(query:String):List<UserResponseItem>
 }
 
 class NetworkUserRepository(
@@ -30,5 +31,9 @@ class NetworkUserRepository(
 
     override suspend fun getFollower(username: String): List<FollowerResponseItem> {
         return userApiService.getFollower(username)
+    }
+
+    override suspend fun searchUser(query: String): List<UserResponseItem> {
+        return userApiService.searchUser(query)
     }
 }

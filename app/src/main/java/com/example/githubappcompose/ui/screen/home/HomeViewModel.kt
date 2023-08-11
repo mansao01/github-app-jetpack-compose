@@ -12,6 +12,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.githubappcompose.GitHubApplication
 import com.example.githubappcompose.data.UserRepository
 import com.example.githubappcompose.ui.common.HomeUiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -21,15 +23,31 @@ class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
     var uiState: HomeUiState by mutableStateOf(HomeUiState.Loading)
         private set
 
+
+
     init {
         getUsers()
     }
 
-      fun getUsers() {
+    fun getUsers() {
         viewModelScope.launch {
             uiState = HomeUiState.Loading
             uiState = try {
                 val result = userRepository.getUsers()
+                HomeUiState.Success(result)
+            } catch (e: IOException) {
+                HomeUiState.Error
+            } catch (e: HttpException) {
+                HomeUiState.Error
+            }
+        }
+    }
+
+    fun searchUser(query: String) {
+        viewModelScope.launch {
+            uiState = HomeUiState.Loading
+            uiState = try {
+                val result = userRepository.searchUser(query)
                 HomeUiState.Success(result)
             } catch (e: IOException) {
                 HomeUiState.Error
