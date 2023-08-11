@@ -31,7 +31,7 @@ fun FollowerListItem(
     user: List<FollowingResponseItem>,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         items(user) { data ->
             FollowingItem(user = data)
         }

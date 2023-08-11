@@ -11,10 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.githubappcompose.GitHubApplication
 import com.example.githubappcompose.data.UserRepository
-import com.example.githubappcompose.network.response.UserResponseItem
 import com.example.githubappcompose.ui.common.HomeUiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -28,7 +25,7 @@ class HomeViewModel(private val userRepository: UserRepository) : ViewModel() {
         getUsers()
     }
 
-     private fun getUsers() {
+      fun getUsers() {
         viewModelScope.launch {
             uiState = HomeUiState.Loading
             uiState = try {
