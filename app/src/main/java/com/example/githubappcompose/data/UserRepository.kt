@@ -1,5 +1,6 @@
 package com.example.githubappcompose.data
 
+import com.example.githubappcompose.network.response.SearchUserResponse
 import com.example.githubappcompose.network.UserApiService
 import com.example.githubappcompose.network.response.FollowerResponseItem
 import com.example.githubappcompose.network.response.FollowingResponseItem
@@ -11,7 +12,7 @@ interface UserRepository {
     suspend fun getDetailUser(username: String): UserDetailResponse
     suspend fun getFollowing(username: String): List<FollowingResponseItem>
     suspend fun getFollower(username: String): List<FollowerResponseItem>
-    suspend fun searchUser(query:String):List<UserResponseItem>
+    suspend fun searchUser(query:String): SearchUserResponse
 }
 
 class NetworkUserRepository(
@@ -33,7 +34,7 @@ class NetworkUserRepository(
         return userApiService.getFollower(username)
     }
 
-    override suspend fun searchUser(query: String): List<UserResponseItem> {
+    override suspend fun searchUser(query: String): SearchUserResponse {
         return userApiService.searchUser(query)
     }
 }

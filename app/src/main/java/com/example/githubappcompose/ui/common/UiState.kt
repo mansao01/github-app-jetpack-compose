@@ -2,11 +2,13 @@ package com.example.githubappcompose.ui.common
 
 import com.example.githubappcompose.network.response.FollowerResponseItem
 import com.example.githubappcompose.network.response.FollowingResponseItem
+import com.example.githubappcompose.network.response.SearchItems
 import com.example.githubappcompose.network.response.UserDetailResponse
 import com.example.githubappcompose.network.response.UserResponseItem
 
 sealed interface HomeUiState {
     data class Success(val users: List<UserResponseItem>) : HomeUiState
+    data class SuccessSearch(val users: List<SearchItems>) : HomeUiState
     object Error : HomeUiState
     object Loading : HomeUiState
 }

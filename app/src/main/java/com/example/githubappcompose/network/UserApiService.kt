@@ -2,6 +2,7 @@ package com.example.githubappcompose.network
 
 import com.example.githubappcompose.network.response.FollowerResponseItem
 import com.example.githubappcompose.network.response.FollowingResponseItem
+import com.example.githubappcompose.network.response.SearchUserResponse
 import com.example.githubappcompose.network.response.UserDetailResponse
 import com.example.githubappcompose.network.response.UserResponseItem
 import retrofit2.http.GET
@@ -40,7 +41,7 @@ interface UserApiService {
 
     @GET("search/users?")
     @Headers("authorization: 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 ")
-    fun searchUser(
+    suspend fun searchUser(
         @Query("q") q: String
-    ): List<UserResponseItem>
+    ): SearchUserResponse
 }

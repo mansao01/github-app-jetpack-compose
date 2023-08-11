@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.githubappcompose.network.response.SearchItems
 import com.example.githubappcompose.network.response.UserResponseItem
 import com.example.githubappcompose.ui.common.HomeUiState
 import com.example.githubappcompose.ui.component.ErrorScreen
 import com.example.githubappcompose.ui.component.LoadingScreen
 import com.example.githubappcompose.ui.component.MySearchBar
 import com.example.githubappcompose.ui.component.UserItem
+import com.example.githubappcompose.ui.component.UserSearchItem
 
 
 @Composable
@@ -25,20 +27,34 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 ) {
-    when (uiState) {
-        is HomeUiState.Loading -> LoadingScreen()
-        is HomeUiState.Success -> HomeContent(
-            user = uiState.users,
-            navigateToDetail = navigateToDetail,
+
+    Column {
+        MySearchBar(
+            homeViewModel = homeViewModel,
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         )
+        when (uiState) {
+            is HomeUiState.Loading -> LoadingScreen()
+            is HomeUiState.Success -> HomeContent(
+                user = uiState.users,
+                navigateToDetail = navigateToDetail,
+                modifier = Modifier
+            )
 
-        is HomeUiState.Error -> ErrorScreen(
-            modifier.clickable { homeViewModel.getUsers() }
-        )
+            is HomeUiState.SuccessSearch -> UserSearchListItem(
+                user = uiState.users,
+                navigateToDetail = navigateToDetail
+            )
+
+            is HomeUiState.Error -> ErrorScreen(
+                modifier.clickable { homeViewModel.getUsers() }
+            )
+        }
     }
-
 }
+
 
 @Composable
 fun HomeContent(
@@ -46,16 +62,9 @@ fun HomeContent(
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column {
-        MySearchBar(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-        UserListItem(user = user, navigateToDetail = navigateToDetail)
-    }
-
+    UserListItem(user = user, navigateToDetail = navigateToDetail)
 }
+
 
 @Composable
 fun UserListItem(
@@ -65,12 +74,29 @@ fun UserListItem(
 ) {
     LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
         items(user) { data ->
-            UserItem(user = data, modifier = modifier
-                .clickable { navigateToDetail(data.login) }
-            )
+            UserItem(user = data, modifier = modifier.clickable { navigateToDetail(data.login) })
         }
     }
-
 }
+
+@Composable
+fun UserSearchListItem(
+    user: List<SearchItems>,
+    navigateToDetail: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
+        items(user) { data ->
+            UserSearchItem(user = data, modifier = modifier.clickable {
+                data.login?.let {
+                    navigateToDetail(
+                        it
+                    )
+                }
+            })
+        }
+    }
+}
+
 
 

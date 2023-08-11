@@ -2,7 +2,6 @@ package com.example.githubappcompose.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +18,7 @@ import coil.request.ImageRequest
 import com.example.githubappcompose.R
 import com.example.githubappcompose.network.response.FollowerResponseItem
 import com.example.githubappcompose.network.response.FollowingResponseItem
+import com.example.githubappcompose.network.response.SearchItems
 import com.example.githubappcompose.network.response.UserResponseItem
 
 @Composable
@@ -40,6 +40,32 @@ fun UserItem(
             )
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Text(text = user.login, style = MaterialTheme.typography.titleMedium)
+
+            }
+        }
+    }
+}
+@Composable
+fun UserSearchItem(
+    user: SearchItems?, modifier: Modifier = Modifier
+) {
+    Card(modifier = modifier.padding(4.dp), shape = MaterialTheme.shapes.medium) {
+        Row(modifier = modifier.fillMaxWidth()) {
+            AsyncImage(
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(user?.avatarUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                placeholder = painterResource(id = R.drawable.loading_img),
+                error = painterResource(id = R.drawable.ic_broken_image),
+                modifier = Modifier
+                    .size(60.dp)
+            )
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                if (user != null) {
+                    user.login?.let { Text(text = it, style = MaterialTheme.typography.titleMedium) }
+                }
 
             }
         }

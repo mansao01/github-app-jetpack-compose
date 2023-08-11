@@ -16,24 +16,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.githubappcompose.R
+import com.example.githubappcompose.ui.screen.home.HomeViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MySearchBar(modifier: Modifier = Modifier) {
+fun MySearchBar(modifier: Modifier = Modifier, homeViewModel: HomeViewModel) {
     var query by remember { mutableStateOf("") }
     var isActive by remember { mutableStateOf(false) }
     SearchBar(
         query = query,
         onQueryChange = { query = it },
         onSearch = { newQuery ->
-            println("Performing search in query: $newQuery")
+            homeViewModel.searchUser(newQuery)
         },
         active = isActive,
         onActiveChange = { isActive = it },
         placeholder = { Text(text = stringResource(R.string.search_user)) },
         leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
-        trailingIcon ={
+        trailingIcon = {
             if (isActive) {
                 IconButton(
                     onClick = { if (query.isNotEmpty()) query = "" else isActive = false }
@@ -44,7 +45,7 @@ fun MySearchBar(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     ) {
-        
+
     }
 
 }
