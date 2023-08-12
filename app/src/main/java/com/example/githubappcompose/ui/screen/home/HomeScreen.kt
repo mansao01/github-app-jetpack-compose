@@ -4,10 +4,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ListItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.githubappcompose.network.response.SearchItems
@@ -62,7 +68,7 @@ fun HomeContent(
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    UserListItem(user = user, navigateToDetail = navigateToDetail)
+    UserListItem(user = user, navigateToDetail = navigateToDetail, modifier = modifier)
 }
 
 
