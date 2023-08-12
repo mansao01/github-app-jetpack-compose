@@ -2,10 +2,10 @@ package com.example.githubappcompose.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class FollowerResponse(
-	@field:SerializedName("FollowResponse")
-	val followResponse: List<FollowerResponseItem?>? = null
-)
+//data class FollowerResponse(
+//	@field:SerializedName("FollowResponse")
+//	val followResponse: List<FollowerResponseItem?>? = null
+//)
 
 data class FollowerResponseItem(
 

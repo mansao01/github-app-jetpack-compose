@@ -163,8 +163,6 @@ fun TabFollowSection(
     val tabs = listOf(
         TabItem("Follower") { FollowerScreen(uiState = followerUiState) },
         TabItem("Following") { FollowingScreen(uiState = followingUiState) },
-//                TabItem.Following,
-//        TabItem.Follower
     )
 
     val pagerState = rememberPagerState(initialPage = tabs.size)
