@@ -7,9 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.githubappcompose.R
 import com.example.githubappcompose.network.response.SearchItems
 import com.example.githubappcompose.network.response.UserResponseItem
 import com.example.githubappcompose.ui.common.HomeUiState
@@ -72,9 +77,21 @@ fun UserListItem(
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
-        items(user) { data ->
-            UserItem(user = data, modifier = modifier.clickable { navigateToDetail(data.login) })
+    if (user.isNotEmpty()) {
+        LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
+            items(user) { data ->
+                UserItem(
+                    user = data,
+                    modifier = modifier.clickable { navigateToDetail(data.login) })
+            }
+        }
+    } else {
+
+        val composition by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.not_found))
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            LottieAnimation(composition = composition)
         }
     }
 }
